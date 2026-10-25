@@ -46,4 +46,4 @@
 5. **Improving the Core Product:** Everything an FDE learns while working with clients gets fed back to the internal product and research teams to make the main software platform better for everyone.
 
 ## Next Step
-* Transition into Week 2: Deepen Python proficiency, start building CLI tools, and learn API integration fundamentals.
+* Transition into Week 2: customer discovery (The Mom Test), technical writing, enterprise data overview, and CS50P part 2 (exceptions, libraries, file I/O).
