@@ -1,4 +1,4 @@
-Subject: Decision needed by Thursday, 5 November: Approval for a 20-minute chat with Priya
+Subject: Two asks by Thu 5 Nov: 20 mins with Priya, and an IT/compliance contact
 
 Hi Dana,
 
