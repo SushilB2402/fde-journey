@@ -1,0 +1,56 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="noshow-flow" name="Outpatient no-show reporting: current flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Outpatient no-show reporting: current flow (Monday to Wednesday)" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="620" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="Q" value="Director asks a question&#xa;(Monday leadership meeting)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="60" width="240" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="D1" value="Dana messages Priya" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="160" width="240" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="A" value="Priya exports data from the booking system" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="260" width="240" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="M" value="Priya matches the two files by hand in Excel&#xa;(Dana's guess: most of a day)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#b8860b;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="380" width="240" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="S" value="Cardiology spreadsheet&#xa;(owner unknown)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="385" width="200" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="R" value="Figure reaches Dana (Wednesday)&#xa;About 14% no-shows in cardiology" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="500" width="240" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="F" value="Pilot decision parked&#xa;to next month's meeting" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="240" y="610" width="240" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="Q" target="D1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="D1" target="A"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="A" target="M"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="S" target="M"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="M" target="R"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="R" target="F"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="legend-title" value="Legend" style="text;html=1;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="60" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-v" value="Verified: Dana said this" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#2e7d32;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="90" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-a" value="Assumed or second-hand: to confirm" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3cd;strokeColor=#b8860b;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="130" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="note" value="Source: role-play 2 with Dana. Dana only knows Priya's steps from the outside, so the matching step is marked as assumed." style="text;html=1;whiteSpace=wrap;fontSize=10;align=left;verticalAlign=top;fontColor=#595959;" vertex="1" parent="1">
+          <mxGeometry x="560" y="175" width="200" height="70" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
