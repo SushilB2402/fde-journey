@@ -1,1 +1,2 @@
 emoji==2.16.0
+tabulate==0.10.0
