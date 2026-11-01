@@ -1,2 +1,5 @@
 .venv/
 week2/cs50p/after.csv
+week2/cs50p/clean_appointments.csv
+week2/cs50p/rejected_rows.csv
+week2/cs50p/rejection_summary.json

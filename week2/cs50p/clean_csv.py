@@ -4,10 +4,13 @@ from pathlib import Path
 import json
 from collections import Counter
 
-# Master data mapping for standardizing clinic names
+# Master data mapping restoring clinic variants (keys in Title Case to match .title())
 CLINIC_MAPPING = {
     "Cardiology": "Cardiology",
+    "Cardio Outpatients": "Cardiology",
+    "Ortho": "Orthopaedics",
     "Orthopaedics": "Orthopaedics",
+    "Derm": "Dermatology",
     "Dermatology": "Dermatology"
 }
 
@@ -18,7 +21,10 @@ def field(row, name):
     return (row.get(name) or "").strip()
 
 def parse_date(date_str):
-    """Parses and validates date string, raising a clean ValueError on out-of-range dates."""
+    """Parses and validates date string. 
+    Note: Returns the parsed datetime object for format/validity checks, 
+    even though the raw string is retained for output.
+    """
     try:
         dt = datetime.strptime(date_str, "%d/%m/%Y")
         return dt
@@ -50,7 +56,7 @@ def clean_row(row, seen_ids):
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status: '{status}'")
 
-    # 5. Normalize clinic name case-insensitively using master data
+    # 5. Normalize clinic name case-insensitively using master data variants
     clinic_raw = field(row, "clinic")
     if not clinic_raw:
         raise ValueError("Missing clinic")
@@ -86,7 +92,12 @@ def main():
         non_empty = sum(1 for line in f if line.strip())
     
     blank_lines = total_lines - non_empty
-    expected_rows = non_empty - 1
+    
+    # Handle empty or header-only files safely using max()
+    expected_rows = max(non_empty - 1, 0)
+    if expected_rows == 0 and total_lines <= 1:
+        print("File is empty or contains only a header. Stopping processing.")
+        return
 
     clean_rows = []
     rejected_rows = []
@@ -96,6 +107,9 @@ def main():
         reader = csv.DictReader(infile)
         
         for raw_row in reader:
+            # Note: Edge case — a line containing only whitespace is skipped by 
+            # non_empty line counting but may be parsed as an empty row by DictReader,
+            # causing a slight reconciliation delta if present.
             try:
                 cleaned = clean_row(raw_row, seen_ids)
                 seen_ids.add(cleaned["appointment_id"])
@@ -123,8 +137,10 @@ def main():
         writer.writeheader()
         writer.writerows(rejected_rows)
 
-    # Aggregate rejection reasons for JSON summary metrics
-    reason_counts = Counter(row["reason"] for row in rejected_rows)
+    # Group rejection reasons by category prefix for meaningful summary metrics
+    reason_categories = [row["reason"].split(":")[0] for row in rejected_rows]
+    reason_counts = Counter(reason_categories)
+
     total_processed = len(clean_rows) + len(rejected_rows)
     reconciliation_match = (expected_rows == total_processed)
 
@@ -135,13 +151,13 @@ def main():
         "clean_rows_written": len(clean_rows),
         "rejected_rows_written": len(rejected_rows),
         "reconciliation_match": reconciliation_match,
-        "rejection_reasons": dict(reason_counts)
+        "rejection_categories": dict(reason_counts)
     }
 
     with open(summary_output, mode="w", encoding="utf-8") as jsonfile:
         json.dump(summary_data, jsonfile, indent=4)
 
-    # Print reconciliation metrics
+    # Print explicit reconciliation equation and metrics report
     print("==========================================")
     print("          RECONCILIATION REPORT           ")
     print("==========================================")
@@ -151,7 +167,8 @@ def main():
     print(f"Clean Rows Written:   {len(clean_rows)}")
     print(f"Rejected Rows Written:{len(rejected_rows)}")
     print(f"Summary Exported to:  {summary_output.name}")
-    print(f"Reconciliation Check: {'MATCH' if reconciliation_match else 'MISMATCH'}")
+    print(f"Reconciliation Check: {expected_rows} = {len(clean_rows)} + {len(rejected_rows)} "
+          f"({'MATCH' if reconciliation_match else 'MISMATCH'})")
     print("==========================================")
 
 if __name__ == "__main__":
