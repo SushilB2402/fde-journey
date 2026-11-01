@@ -1,0 +1,14 @@
+appointment_id,clinic,date,status
+APT101,cardiology,10/02/2026,attended
+APT102,Cardio Outpatients,11/02/2026,no-show
+APT103,Ortho,12/02/2026,attended
+APT104,Orthopaedics,13/02/2026,attended
+APT105,Derm,14/02/2026,no-show
+
+APT106,Dermatology,15/02/2026,attended
+,Cardiology,16/02/2026,attended
+APT108,Cardiology,31/02/2026,attended
+APT101,Ortho,17/02/2026,no-show
+APT110,Cardiology,18/02/2026,pending
+APT203,Cardiology,01/03/2026
+APT112,Cardiology,20/02/2026,attended,ExtraFieldData
