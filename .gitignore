@@ -6,3 +6,5 @@ week2/cs50p/rejection_summary.json
 week3/appointments.db
 week3/sql-practice/*.db
 week3/sql-practice/data/
+.pytest_cache/
+__pycache__/
