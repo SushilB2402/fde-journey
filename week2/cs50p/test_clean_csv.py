@@ -48,10 +48,10 @@ def test_clean_row_duplicate_id():
 def test_clean_row_invalid_status():
     row = {"appointment_id": "APT202", "clinic": "Cardiology", "date": "15/05/2026", "status": "maybe"}
     with pytest.raises(ValueError, match="Invalid status"):
-        clean_row(row, seen=set())
+        clean_row(row, seen_ids=set())
 
 def test_clean_row_too_many_columns():
     # DictReader places unkeyed extra columns under key `None`
     row = {"appointment_id": "APT203", "clinic": "Cardiology", "date": "15/05/2026", "status": "attended", None: "ExtraData"}
     with pytest.raises(ValueError, match="Too many columns"):
-        clean_row(row, seen=set())
+        clean_row(row, seen_ids=set())
