@@ -1,7 +1,5 @@
--- ==========================================
--- SQLBolt Exercise Answers
--- Generated file: Sqlbolt.sql
--- ==========================================
+-- SQLBolt exercise answers (lessons 1-12). Source: sqlbolt.com. Written by me; queries typed and tested in the browser.
+
 
 -- ------------------------------------------
 -- Exercise 1 — Tasks (SELECT Queries 101)
@@ -163,3 +161,100 @@ SELECT DISTINCT building_name, role
 FROM buildings 
 LEFT JOIN employees 
   ON building_name = building;
+
+
+-- ------------------------------------------
+-- Exercise 8 — Tasks (A short note on NULLs)
+-- ------------------------------------------
+
+-- 1. Find the name and role of all employees who have not been assigned to a building
+SELECT name, role 
+FROM employees 
+WHERE building IS NULL;
+
+-- 2. Find the names of the buildings that hold no employees
+SELECT building_name 
+FROM buildings 
+LEFT JOIN employees 
+  ON building_name = building 
+WHERE building IS NULL;
+
+
+-- ------------------------------------------
+-- Exercise 9 — Tasks (Queries with expressions)
+-- ------------------------------------------
+
+-- 1. List all movies and their combined sales in millions of dollars
+SELECT title, (domestic_sales + international_sales) / 1000000.0 AS combined_sales_millions
+FROM movies
+INNER JOIN boxoffice 
+  ON movies.id = boxoffice.movie_id;
+
+-- 2. List all movies and their ratings in percent
+SELECT title, rating * 10 AS rating_percent
+FROM movies
+INNER JOIN boxoffice 
+  ON movies.id = boxoffice.movie_id;
+
+-- 3. List all movies that were released on even number years
+SELECT title, year 
+FROM movies 
+WHERE year % 2 = 0;
+
+
+-- ------------------------------------------
+-- Exercise 10 — Tasks (Queries with aggregates - Part 1)
+-- ------------------------------------------
+
+-- 1. Find the longest time that an employee has been at the studio
+SELECT MAX(years_employed) AS longest_tenure 
+FROM employees;
+
+-- 2. For each role, find the average number of years employed by employees in that role
+SELECT role, AVG(years_employed) AS average_years 
+FROM employees 
+GROUP BY role;
+
+-- 3. Find the total number of employee years worked in each building
+SELECT building, SUM(years_employed) AS total_years 
+FROM employees 
+GROUP BY building;
+
+
+-- ------------------------------------------
+-- Exercise 11 — Tasks (Queries with aggregates - Part 2)
+-- ------------------------------------------
+
+-- 1. Find the number of Artists in the studio (without a HAVING clause)
+SELECT COUNT(*) AS total_artists 
+FROM employees 
+WHERE role = 'Artist';
+
+-- 2. Find the number of Employees of each role in the studio
+SELECT role, COUNT(*) AS employee_count 
+FROM employees 
+GROUP BY role;
+
+-- 3. Find the total number of years employed by all Engineers
+SELECT SUM(years_employed) AS total_engineer_years 
+FROM employees 
+WHERE role = 'Engineer';
+
+
+-- ------------------------------------------
+-- Exercise 12 — Tasks (Order of execution / Grouping with Joins)
+-- ------------------------------------------
+
+-- 1. Find the number of movies each director has directed
+SELECT director, COUNT(*) AS movie_count 
+FROM movies 
+GROUP BY director;
+
+-- 2. Find the total domestic and international sales that can be attributed to each director (total sales per director)
+SELECT 
+    director, 
+    SUM(domestic_sales + international_sales) AS total_sales
+FROM movies
+INNER JOIN boxoffice 
+    ON movies.id = boxoffice.movie_id
+GROUP BY director;
