@@ -8,3 +8,4 @@ week3/sql-practice/*.db
 week3/sql-practice/data/
 .pytest_cache/
 __pycache__/
+week3/pandas/data/
