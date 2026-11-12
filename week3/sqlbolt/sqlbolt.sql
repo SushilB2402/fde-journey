@@ -258,3 +258,16 @@ FROM movies
 INNER JOIN boxoffice 
     ON movies.id = boxoffice.movie_id
 GROUP BY director;
+
+-- ------------------------------------------
+-- Bonus: HAVING and order of execution
+-- ------------------------------------------
+
+-- Roles with more than 2 employees (WHERE filters rows before grouping, HAVING filters groups after)
+SELECT role, COUNT(*) AS employee_count
+FROM employees
+GROUP BY role
+HAVING COUNT(*) > 2;
+
+-- Order of execution, in my own words:
+-- FROM / JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT
