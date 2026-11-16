@@ -34,11 +34,13 @@ I add files by name because `git add .` can stage things I never meant to share,
 
 A conflict happens when two branches changed the same lines of the same file. Git can't choose, so it stops the merge and writes both versions into the file:
 
+```
 <<<<<<< HEAD
 the version on the branch I am standing on
 =======
 the version coming in from the other branch
 >>>>>>> green
+```
 
 - `<<<<<<< HEAD` starts my side, the branch I am on.
 - `=======` is the divider between my side and theirs.
