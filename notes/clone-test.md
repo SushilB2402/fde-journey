@@ -66,4 +66,4 @@ pwd                  # must print /c/Users/Sushil Bhosale
 rm -r pandas-check
 ```
 
-- [x] `pandas-check` deleted (tick once `ls ~` no longer lists it)
+- [x] `pandas-check` deleted (`ls ~` no longer lists it)
