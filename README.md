@@ -34,4 +34,4 @@ These commands are for Git Bash on Windows with Python 3.13. The SQL project nee
 
 - Every change goes on a branch and through a pull request, following [notes/git-workflow.md](notes/git-workflow.md).
 - Labs and experiments run in a folder outside this repository.
-- Each project is checked from a fresh clone before I call it done.
+- The pandas project was checked from a fresh clone ([notes/clone-test.md](notes/clone-test.md)).
