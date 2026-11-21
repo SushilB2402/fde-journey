@@ -319,7 +319,7 @@ when a run completes successfully.
 
 # Known Limitations
 
-- A GitHub rate-limit response of 403 is not retried. Wait for the limit to reset, or set `GITHUB_TOKEN`.
+- A 403 caused by the GitHub rate limit is not retried. The script stops and prints the time the limit resets (UTC); wait until then, or set `GITHUB_TOKEN`.
 - Each page costs one request, so unauthenticated runs (60 per hour) allow only a few full runs per hour.
 - The wait before a retry is `BACKOFF_BASE_SECONDS ** attempt`, so a base of 1 gives a constant 1-second wait.
 
