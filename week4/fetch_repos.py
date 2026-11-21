@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import time
+from datetime import datetime, timezone
 
 import requests
 
@@ -24,6 +25,22 @@ if GITHUB_TOKEN:
 RETRY_STATUS = {429, 500, 502, 503, 504}
 
 
+def _handle_rate_limit(resp):
+    reset = resp.headers.get("x-ratelimit-reset")
+    if reset:
+        reset_time = datetime.fromtimestamp(
+            int(reset),
+            tz=timezone.utc,
+        )
+        raise RuntimeError(
+            "GitHub rate limit exceeded. "
+            f"Rate limit resets at "
+            f"{reset_time:%Y-%m-%d %H:%M:%S} UTC"
+        )
+
+    raise RuntimeError("GitHub rate limit exceeded.")
+
+
 def get_with_retry(
     url,
     params=None,
@@ -42,9 +59,16 @@ def get_with_retry(
         except (requests.ConnectionError, requests.Timeout):
             resp = None
 
-        if resp is not None and resp.status_code not in RETRY_STATUS:
-            resp.raise_for_status()
-            return resp
+        if resp is not None:
+            if (
+                resp.status_code == 403
+                and resp.headers.get("x-ratelimit-remaining") == "0"
+            ):
+                _handle_rate_limit(resp)
+
+            if resp.status_code not in RETRY_STATUS:
+                resp.raise_for_status()
+                return resp
 
         if attempt == max_attempts:
             raise RuntimeError(
@@ -79,7 +103,11 @@ def fetch_all(url, params, headers):
             backoff_base=BACKOFF_BASE_SECONDS,
         )
 
-        items.extend(resp.json())
+        page_items = resp.json()
+        if not isinstance(page_items, list):
+            raise ValueError("Expected a JSON list of repositories from API")
+
+        items.extend(page_items)
 
         remaining = resp.headers.get(
             "x-ratelimit-remaining",
@@ -100,14 +128,10 @@ def fetch_all(url, params, headers):
 
 def main():
     if not GITHUB_ORG and not API_URL:
-        raise ValueError(
-            "GITHUB_ORG must not be empty"
-        )
+        raise ValueError("GITHUB_ORG must not be empty")
 
     if not 1 <= PER_PAGE <= 100:
-        raise ValueError(
-            "PER_PAGE must be between 1 and 100"
-        )
+        raise ValueError("PER_PAGE must be between 1 and 100")
 
     url = (
         API_URL
