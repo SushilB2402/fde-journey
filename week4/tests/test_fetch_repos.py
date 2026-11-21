@@ -105,3 +105,44 @@ def test_empty_org_saves_empty_list(monkeypatch, tmp_path):
     monkeypatch.setattr(fr, "fetch_all", lambda *a, **k: [])
     fr.main()
     assert json.loads(out.read_text(encoding="utf-8")) == []
+
+
+# ---------- GitHub rate-limit (403) handling ----------
+
+def test_403_rate_limit_reports_reset_time_and_is_not_retried(monkeypatch):
+    sleeps = patch_get(
+        monkeypatch,
+        [
+            FakeResponse(
+                403,
+                headers={
+                    "x-ratelimit-remaining": "0",
+                    "x-ratelimit-reset": "1700000000",
+                },
+            )
+        ],
+    )
+    with pytest.raises(RuntimeError) as exc:
+        fr.get_with_retry("http://example.test")
+    assert "rate limit" in str(exc.value).lower()
+    assert "2023-11-14 22:13:20 UTC" in str(exc.value)
+    assert sleeps == []  # not retried
+
+
+def test_403_rate_limit_without_reset_header_still_clear(monkeypatch):
+    patch_get(
+        monkeypatch,
+        [FakeResponse(403, headers={"x-ratelimit-remaining": "0"})],
+    )
+    with pytest.raises(RuntimeError) as exc:
+        fr.get_with_retry("http://example.test")
+    assert "rate limit exceeded" in str(exc.value).lower()
+
+
+def test_403_without_rate_limit_is_a_normal_http_error(monkeypatch):
+    patch_get(
+        monkeypatch,
+        [FakeResponse(403, headers={"x-ratelimit-remaining": "42"})],
+    )
+    with pytest.raises(requests.HTTPError):
+        fr.get_with_retry("http://example.test")
